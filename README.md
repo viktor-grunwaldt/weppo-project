@@ -1,6 +1,26 @@
 # tic-tac-toe
 
-base of the tic-tac-toe project.
+## Origin
+
+Project was created as final assignment for web dev, which focused on using sockets (with [socket.io](https://socket.io)).
+Goal was to implement a multiplayer game (or a game platform) which would then communicate with players through sockets.
+
+## Technologies used
+
+ * [pnpm](https://pnpm.io) For disk efficiency (used for the whole course!)
+ * [VS Code](https://code.visualstudio.com/) Out of the box js/ts/tsx/html/css support is a killer feature, used it despite using [Helix](https://helix-editor.com/) as primary text editor.
+ * [Typescript](https://www.typescriptlang.org/) as both the front and backend language.
+ * [socket.io](https://socket.io) 4.7.4 
+
+### backend
+
+ * expressjs as web framework.
+ * ts-node + nodemon for automatic reloads
+
+### frontend
+
+ * vite to init and build frontend (allows me to bundle socket.io-client)
+ * react since I'm building a game, I'd want to implement interactivity in a ~~well~~ structured manner.
 
 ## Running in dev
 
