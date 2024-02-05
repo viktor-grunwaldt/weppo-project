@@ -63,6 +63,7 @@ export function useCreateState() {
     setBoard: sb,
     setGameStage: sgs,
   };
+  startGame(r);
   return r;
 }
 
@@ -153,7 +154,9 @@ export function stateOrResult(state: State): StageOrResult {
   return getWinner(state)!;
 }
 
-export function getTextForStateOrResult(state: StageOrResult): string {
+export function getTextForStateOrResultSinglePlayer(
+  state: StageOrResult
+): string {
   switch (state) {
     case GameStage.NotStarted:
       return "Not Started";
@@ -165,6 +168,30 @@ export function getTextForStateOrResult(state: StageOrResult): string {
       return "Player X Won";
     case GameResult.PlayerOWon:
       return "Player O Won";
+    case GameResult.Draw:
+      return "Draw";
+    default:
+      throw new Error(`Unexpected game stage or result: ${state}`);
+  }
+}
+
+export function getTextForStateOrResultMultiplayer(
+  state: StageOrResult,
+  pCol: Color
+): string {
+  const fwhose = (c: Color) => (pCol === c ? "Your" : "Opponent's");
+  const fwho = (c: Color) => (pCol === c ? "You" : "Opponent");
+  switch (state) {
+    case GameStage.NotStarted:
+      return "Not Started";
+    case GameStage.PlayerXTurn:
+      return `${fwhose('X')} Turn`;
+    case GameStage.PlayerOTurn:
+      return `${fwhose('O')} Turn`;
+    case GameResult.PlayerXWon:
+      return `${fwho('X')} Won`;
+    case GameResult.PlayerOWon:
+      return `${fwho('O')} Won`;
     case GameResult.Draw:
       return "Draw";
     default:

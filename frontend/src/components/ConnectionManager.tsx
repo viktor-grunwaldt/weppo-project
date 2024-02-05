@@ -1,6 +1,6 @@
-import { socket } from '../services/socket_service';
+import { socket } from "../services/socket_service";
 
-export function ConnectionManager() {
+export function ConnectionManager({ isConnected }: { isConnected: boolean }) {
   function connect() {
     socket.connect();
   }
@@ -12,8 +12,11 @@ export function ConnectionManager() {
   return (
     // TODO: add form to send username
     <>
-      <button onClick={ connect }>Connect</button>
-      <button onClick={ disconnect }>Disconnect</button>
+      {isConnected ? (
+        <button onClick={disconnect}>Disconnect</button>
+        ) : (
+        <button onClick={connect}>Connect</button>
+      )}
     </>
   );
 }

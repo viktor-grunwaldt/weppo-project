@@ -68,8 +68,14 @@ export class Rooms {
       u.room = new_room;
       // and inserted to rooms
       this.rooms.set(rn, new_room);
-      console.log(`player ${u.name} created new room`);
+
+      console.log(`player ${u.name} created new room "${rn}"`);
       callback("joined as host");
+      for (const p of this.users.values()) {
+        if (typeof p.room === "undefined") {
+          p.socket.emit("new_room", rn);
+        }
+      }
     }
   }
 
@@ -87,8 +93,13 @@ export class Rooms {
     this.users.delete(id);
   }
 
-  list_rooms(callback: (rooms: string[]) => void) {
-    callback(Array.from(this.rooms.keys()));
+  list_rooms(callback: (msg: { rooms: string[] }) => void) {
+    const rooms = Array.from(this.rooms.values());
+    console.log("rooms list", rooms.map((a)=> a.name));
+    const msg = {
+      rooms: rooms.map((r) => r.name),
+    };
+    callback(msg);
   }
 
   delete_room(rn: string) {
@@ -109,13 +120,17 @@ export class Rooms {
       socket: s,
     };
     this.users.set(s.id, p);
+    console.log("added user:", p.name);
+    for (const [k, v] of this.users.entries()) {
+      console.log(k, v.name);
+    }
   }
 
   handle_user_moved(
     id: string,
     msg: { message: string; move: number },
     callback: (result: string) => void
-  ): Socket | void {
+  ) {
     // sprinkle a bit of data sanitisation
     console.log(id, msg, callback);
     if (msg.message !== "IDO" || typeof msg.move === "undefined") {
